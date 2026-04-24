@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: micro-test
+
+server:
+  port: 8080
+
+library:
+  openapi:
+    spec-path: src/main/resources/openapi.yaml
+    output-dir: target/generated-sources/openapi
+    base-package: com.example.transferencias.api
+    enabled: true
