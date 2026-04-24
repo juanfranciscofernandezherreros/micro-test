@@ -18,13 +18,91 @@
     <name>micro-test</name>
     <description>Microservicio de transferencias bancarias</description>
 
+    <properties>
+        <!-- Override OpenAPI generation packages for this microservice -->
+        <openapi.api-package>com.example.transferencias.api</openapi.api-package>
+        <openapi.model-package>com.example.transferencias.api.model</openapi.model-package>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.github.juanfranciscofernandezherreros</groupId>
+                <artifactId>library-base-bom</artifactId>
+                <version>1.0.1-SNAPSHOT</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
+        <!-- Web -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- Base utilities -->
         <dependency>
             <groupId>com.github.juanfranciscofernandezherreros</groupId>
-            <artifactId>library-base-build</artifactId>
-            <version>1.0.1-SNAPSHOT</version>
+            <artifactId>library-base-starter-base</artifactId>
+        </dependency>
+
+        <!-- Persistence (Spring Data JPA + PostgreSQL) -->
+        <dependency>
+            <groupId>com.github.juanfranciscofernandezherreros</groupId>
+            <artifactId>library-base-starter-db</artifactId>
+        </dependency>
+
+        <!-- H2 in-memory DB for development/test -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- Lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Testing -->
+        <dependency>
+            <groupId>com.github.juanfranciscofernandezherreros</groupId>
+            <artifactId>library-base-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <!-- Enable Spring Boot repackaging (library-base-parent disables it by default) -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <skip>false</skip>
+                </configuration>
+            </plugin>
+            <!-- Activate OpenAPI compile-time generation (configured in library-base-parent pluginManagement) -->
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+            </plugin>
+            <!-- Register generated sources as compile source root -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
